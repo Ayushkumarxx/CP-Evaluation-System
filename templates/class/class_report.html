@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Class Report</title>
+    <link rel="stylesheet" href="class_report.css">
+</head>
+<body>
+    <header>
+        <div class="text-content">
+            <img src="../assets/wordLogo.png" alt="Logo">
+            <p>Kisan College Road, Sohsarai, Biharsharif (Nalanda) PIN - 803001</p>
+        </div>
+        <div class="right-img">
+            <img src="../assets/logo.png" alt="Right Image">
+        </div>
+    </header>
+
+    <p class="report_title">UNIT TEST {{ test_index }} CLASS REPORT</p>
+    <hr>
+
+    <!-- Class Overview Section -->
+    <div class="class-overview">
+        <h2>Class Overview</h2>
+        <div class="overview-grid">
+            <div class="overview-item">
+                <div class="metric-label">Total Students</div>
+                <div class="metric-value">{{ test_stats.total_students }}</div>
+            </div>
+            <div class="overview-item">
+                <div class="metric-label">Average Score</div>
+                <div class="metric-value">{{ test_stats.mean|round() }}</div>
+            </div>
+            <div class="overview-item">
+                <div class="metric-label">Highest Score</div>
+                <div class="metric-value">{{ test_stats.max }}</div>
+            </div>
+            <div class="overview-item">
+                <div class="metric-label">Lowest Score</div>
+                <div class="metric-value">{{ test_stats.min }}</div>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <!-- Charts Section -->
+    <h1 class="dashboard-title">Class Performance Analytics</h1>
+    <section class="graph">
+        <div class="graph-container">
+            <div class="graph-item">
+                <img src="../../{{ plots.score_distribution }}" alt="Score Distribution">
+            </div>
+            <div class="graph-item">
+                <img src="../../{{ plots.pass_fail_donut }}" alt="Pass/Fail Distribution">
+            </div>
+        </div>
+    </section>
+    <section class="graph">
+        <div class="graph-container">
+            <div class="graph-item">
+                <img src="../../{{ plots.subject_accuracy_radar }}" alt="Subject Accuracy Radar">
+            </div>
+        </div>
+    </section>
+
+    <div class="page-break"></div>
+
+    <!-- Student-wise Performance Table -->
+    <p class="section-title">Student-wise Performance</p>
+    <table class="student-performance-table">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>Roll No</th>
+                <th>Name</th>
+                <th>Correct</th>
+                <th>Incorrect</th>
+                <th>Skipped</th>
+                <th>Marks</th>
+         
+                <th>Accuracy</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in students %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ student.roll_no }}</td>
+                <td>{{ student.name }}</td>
+               
+                <td>{{ student.total_correct }}</td>
+                <td>{{ student.total_incorrect }}</td>
+                <td>{{ student.total_unattempted }}</td>
+                 <td>{{ student.obtained_marks }}/{{ student.total_marks }}</td>
+                <td>{{ student.overall_accuracy|round(2) }}%</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="report-footer">
+        <div><strong>Date Issued:</strong> {{ date }}</div>
+        <div><strong>Verified:</strong> ✔ Yes</div>
+        <div><strong>Prepared By:</strong> Academic Evaluation System</div>
+    </div>
+</body>
+</html>

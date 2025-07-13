@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title or "Document" }}</title>
+    <link rel="stylesheet" href="student_report.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="text-content">
+        <!-- <h1>CAREER POINT BIHARSHARIF</h1> -->
+        <img src="../assets/wordLogo.png" alt="" />
+        <p>Kisan College Road, Sohsarai, Biharsharif (Nalanda) PIN - 803001</p>
+      </div>
+      <div class="right-img">
+        <img src="../assets/logo.png" alt="Right Image" />
+      </div>
+    </header>
+
+    <p class="report_title">UNIT TEST {{ test_index }} REPORT</p>
+    <hr />
+
+    <!-- Basic Student Details -->
+    <div class="basic_details">
+      <div class="detail_item">
+        <p><strong>Student Name:</strong> {{ student_details.name }}</p>
+      </div>
+      <div class="detail_item">
+        <p><strong>Mobile Number:</strong> {{ student_details.mob_no }}</p>
+      </div>
+      <div class="detail_item">
+        <p><strong>Roll Number:</strong> {{ student_details.roll_no }}</p>
+      </div>
+      <div class="detail_item">
+        <p><strong>Father's Name:</strong> {{ student_details.father_name }}</p>
+      </div>
+    </div>
+
+    <hr />
+
+    <!-- Performance Table -->
+    <table class="metrics-table">
+      <thead>
+        <tr>
+          <th>PERFORMANCE METRICS</th>
+          <th>BENCHMARKS</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            Total Score:
+            <span
+              >{{ student_details.obtained_marks }}/{{
+              student_details.total_marks }}</span
+            >
+          </td>
+          <td>
+            Class Average:
+            <span
+              >{{ class_average.class_average_marks }}/{{
+              student_details.total_marks }}</span
+            >
+          </td>
+        </tr>
+        <tr>
+          <td>Percentage: <span>{{ student_details.percentage }}%</span></td>
+          <td>
+            Average Percentage:
+            <span>{{ class_average.class_average_percentage }}%</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- New Subject-wise Table -->
+    <p class="subject-analysis-title">Subject-wise Analysis</p>
+    <table class="subject-analysis-table">
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Correct</th>
+          <th>Wrong</th>
+          <th>Unattempted</th>
+          <th>Marks</th>
+          <th>Accuracy</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for subject in subject_wise_data %}
+        <tr>
+          <td>{{ subject.subject }}</td>
+          <td>{{ subject.correct }}</td>
+          <td>{{ subject.incorrect }}</td>
+          <td>{{ subject.unattempted }}</td>
+          <td>{{ (subject.correct * 4) - (subject.incorrect) }}/{{ subject.total * 4 }}</td>
+          <td>{{ subject.accuracy }}%</td>
+          <td class="status-{{ subject.status | replace(' ', '') }}">
+            {{ subject.status }}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="insight-section">
+      <div class="insight-image">
+        <img src="../../{{ plots.gauge_chart }}" alt="Insight Image" />
+      </div>
+      <div class="insight-points">
+        <h3>Key Insights</h3>
+        <ul>
+          {% for point in insights.insights %}
+          <li>{{ point }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- Page Break for New Section -->
+    <div class="page-break"></div>
+    <h1 class="dashboard-title">Student Performance Dashboard</h1>
+    <section class="graph">
+      <h2>Performance Overview</h2>
+      <div class="graph-container">
+        <div class="graph-item">
+          <img src="../../{{ plots.combined_accuracy_charts }}" alt="Graph 1" />
+        </div>
+
+        <div class="graph-item">
+          <img src="../../{{ plots.student_comparison }}" alt="Graph 2" />
+        </div>
+
+        <!-- <div class="graph-item">
+          <img src="{{ plots.subject_accuracy_radar }}" alt="Graph 1" />
+        </div> -->
+      </div>
+    </section>
+    <section class="graph">
+      <h2>Deep Performance Insights</h2>
+      <div class="graph-container">
+        <!-- <div class="graph-item">
+          <img src="{{ plots.student_comparison }}" alt="Graph 2" />
+        </div> -->
+        <div class="graph-item">
+          <img src="../../{{ plots.subject_accuracy_radar }}" alt="Graph 1" />
+        </div>
+
+        <div class="graph-item">
+          <img src="../../{{ plots.accuracy_attempt_matrix }}" alt="Graph 2" />
+        </div>
+      </div>
+    </section>
+    <section class="graph">
+      <h2>Progress Tracking and Summary</h2>
+      <div class="graph-container">
+        <div class="graph-item">
+          <img src="../../{{ plots.student_progress_line }}" alt="Progress Graph" />
+        </div>
+
+        <div class="graph-summary">
+          <div class="badges">
+            {% for chip in insights.tags %}
+            <span class="badge color-{{ loop.index0 % 8 }}">{{ chip }}</span>
+            {% endfor %}
+          </div>
+
+          <div class="details">
+            <div><strong>Date Issued:</strong> {{ date }}</div>
+            <div><strong>Verified:</strong> ✔ Yes</div>
+            <div><strong>Prepared By:</strong> Academic Evaluation System</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

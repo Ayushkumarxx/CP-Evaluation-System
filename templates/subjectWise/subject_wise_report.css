@@ -1,0 +1,261 @@
+/* Your full original CSS remains unchanged */
+/* Reset & Layout */
+@page {
+  size: A4;
+  margin: 25px 30px;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-content {
+  flex: 1;
+}
+
+.text-content h1 {
+  font-size: 32px;
+  font-weight: 900;
+  color: #2c3e50;
+}
+
+.text-content img {
+  height: 50px;
+}
+
+.text-content p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+}
+
+.right-img {
+  flex: 0 0 150px;
+  margin-left: 30px;
+}
+
+.right-img img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+.report_title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 10px 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #555;
+  margin: 15px 0;
+}
+
+.basic_details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  margin: auto;
+  font-size: 14px;
+  color: #222;
+}
+
+.detail_item {
+  flex: 1 1 40%;
+  padding: 4px 5px;
+  background-color: #fdfdfd;
+  border-radius: 6px;
+}
+
+.detail_item p {
+  margin: 0;
+  font-weight: 600;
+}
+
+.detail_item strong {
+  color: #444;
+}
+
+.performance-summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 40px 0;
+}
+
+.summary-card {
+  flex: 1;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border: 1px solid #ddd;
+  text-align: center;
+}
+
+.summary-card h3 {
+  font-size: 18px;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.summary-card .value {
+  font-size: 24px;
+  font-weight: bold;
+  color: #3498db;
+}
+
+.summary-card .percentage {
+  font-size: 16px;
+  color: #7f8c8d;
+  margin-top: 5px;
+}
+
+.charts-section {
+  margin: 60px 0;
+}
+
+.charts-container {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.chart-item {
+  flex: 1;
+  height: 275px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  background-color: #fff;
+  font-size: 14px;
+  color: #666;
+  overflow: hidden;
+}
+
+.chart-item img {
+ max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain; /* optional but safe */
+}
+
+.page-break {
+  break-before: page;
+}
+
+.toc-title {
+  text-align: center;
+  font-size: 28px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 30px;
+}
+
+.chapter-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin: 20px auto;
+}
+
+.chapter-table th,
+.chapter-table td {
+  border: 1px solid #222;
+  padding: 12px 8px;
+  text-align: center;
+}
+
+.chapter-table thead th {
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: bold;
+}
+
+.chapter-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.chapter-table tbody tr:hover {
+  background-color: #e8f4f8;
+}
+
+.status-Focus {
+  color: #e74c3c;
+  font-weight: bold;
+}
+.status-Good {
+  color: #2980b9;
+  font-weight: bold;
+}
+.status-Bad {
+  color: #e74c3c;
+  font-weight: bold;
+}
+.status-Excellent {
+  color: #27ae60;
+  font-weight: bold;
+}
+.status-Strong {
+  color: #27ae60;
+  font-weight: bold;
+}
+
+.chapter-name {
+  text-align: left;
+  font-weight: 600;
+  padding-left: 15px;
+}
+
+.overall-performance {
+  background-color: #e8f5e8;
+  border: 2px solid #27ae60;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 20px 0;
+  text-align: center;
+}
+
+.overall-performance h3 {
+  color: #27ae60;
+  margin-bottom: 10px;
+}
+
+.overall-performance .score {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.report-footer {
+    margin-top: 15px;
+  font-size: 13px;
+  color: #2c3e50;
+  line-height: 1.6;
+  background: #f4f6f7;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.report-footer div {
+    margin-bottom: 5px;
+}

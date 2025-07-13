@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>{{ title }}</title>
+    <link rel="stylesheet" href="subject_wise_report.css" />
+  </head>
+
+  <body>
+    <header>
+      <div class="text-content">
+        <img src="../assets/wordLogo.png" alt="Logo" />
+        <p>Kisan College Road, Sohsarai, Biharsharif (Nalanda) PIN - 803001</p>
+      </div>
+      <div class="right-img">
+        <img src="../assets/logo.png" alt="Right Image" />
+      </div>
+    </header>
+
+    <p class="report_title">{{ student_details[-1].test_name }} REPORT</p>
+    <hr />
+
+    <div class="basic_details">
+      <div class="detail_item"><p><strong>Student Name:</strong> {{ student_details[-1].name }}</p></div>
+      <div class="detail_item"><p><strong>Mobile Number:</strong> {{ student_details[-1].mobile_no }}</p></div>
+      <div class="detail_item"><p><strong>Roll Number:</strong> {{ student_details[-1].roll_no }}</p></div>
+      <div class="detail_item"><p><strong>Father's Name:</strong> {{ student_details[-1].father_name }}</p></div>
+      <div class="detail_item"><p><strong>Batch:</strong> {{ student_details[-1].batch }}</p></div>
+      <div class="detail_item"><p><strong>Subject:</strong> {{ subject }}</p></div>
+    </div>
+
+    <hr />
+
+    <div class="performance-summary">
+      <div class="summary-card">
+        <h3>Total Score</h3>
+        <div class="value">{{ student_details[-1].total_subject_marks }}/{{ student_details[-1].total_marks }}</div>
+        <div class="percentage">{{ student_details[-1].percentage }}%</div>
+      </div>
+      <div class="summary-card">
+        <h3>Correct Answers</h3>
+        <div class="value">{{ student_details[-1].correct }}</div>
+        <div class="percentage">Out of {{ student_details[-1].attempted }} attempted</div>
+      </div>
+      <div class="summary-card">
+        <h3>Accuracy</h3>
+        <div class="value">{{ student_details[-1].accuracy }}%</div>
+        <div class="percentage">Overall Performance</div>
+      </div>
+    </div>
+
+    <div class="charts-section">
+      <h2 style="text-align: center; color: #2c3e50; margin-bottom: 20px;">Performance Analysis</h2>
+      <div class="charts-container">
+        <div class="chart-item">
+          <img src="../../{{ plots.marks_distribution }}" alt="Performance Chart" />
+        </div>
+        <div class="chart-item">
+          <img src="../../{{ plots.accuracy_distribution }}" alt="Accuracy Chart" />
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="overall-performance">
+      <h3>Overall Test Performance</h3>
+      <div class="score">{{ student_details[-1].percentage }}% - {{ student_details[-1].status }}</div>
+    </div> -->
+
+    <div class="page-break"></div>
+
+    <h1 class="toc-title">Chapter-wise Performance Report</h1>
+
+    <table class="chapter-table">
+      <thead>
+        <tr>
+          <th>S.No.</th>
+          <th>Chapter Name</th>
+          <th>Correct</th>
+          <th>Incorrect</th>
+          <th>skipped</th>
+          <th>Marks</th>
+          <th>Accuracy (%)</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for student in student_details %}
+        <tr>
+          <td>{{ loop.index }}</td>
+          <td class="chapter-name">{{ student.test_name }}</td>
+          <td>{{ student.correct }}</td>
+          <td>{{ student.incorrect }}</td>
+          <td>{{ student.unattempted }}</td>
+          <td>{{ student.total_subject_marks }}</td>
+          <td>{{ student.accuracy }}</td>
+          <td class="status-{{student.status}}">{{ student.status }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="margin-top: 30px; display: flex; justify-content: space-between; gap: 20px;">
+      <div class="summary-card">
+        <h3>Total Tests</h3>
+        <div class="value">{{ student_details|length }}</div>
+      </div>
+      <div class="summary-card">
+        <h3>High Accuracy Tests</h3>
+        <div class="value">{{ high_accuracy_chapters }}</div>
+      </div>
+      <div class="summary-card">
+        <h3>Tests Need Focus</h3>
+        <div class="value">{{ focus_required_chapters }}</div>
+      </div>
+    </div>
+
+    <div class="report-footer">
+     <div><strong>Date Issued:</strong> {{ date }}</div>
+            <div><strong>Verified:</strong> ✔ Yes</div>
+            <div><strong>Prepared By:</strong> Academic Evaluation System</div>
+    </div>
+  </body>
+</html>

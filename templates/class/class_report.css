@@ -1,0 +1,219 @@
+/* class_report.css - Inspired by Student Report Design */
+
+/* Reset & Layout */
+@page {
+  size: A4;
+  margin: 25px 30px;
+}
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+}
+
+/* Header */
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.text-content {
+  flex: 1;
+}
+
+.text-content h1 {
+  font-size: 32px;
+  font-weight: 900;
+  color: #2c3e50;
+}
+
+.text-content img {
+  height: 50px;
+}
+
+.text-content p {
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
+}
+
+.right-img {
+  flex: 0 0 150px;
+  margin-left: 30px;
+}
+
+.right-img img {
+  width: 100%;
+  height: auto;
+  border-radius: 6px;
+}
+
+/* Title and Divider */
+.report_title {
+  text-align: center;
+  font-size: 24px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin: 10px 0;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #555;
+  margin: 15px 0;
+}
+
+/* Class Overview Section */
+.class-overview {
+  margin-bottom: 20px;
+}
+
+.class-overview h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.overview-item {
+  background-color: #f5faff;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  border: 1px solid #ccc;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+.metric-label {
+  font-weight: bold;
+  color: #2c3e50;
+  font-size: 14px;
+}
+
+.metric-value {
+  font-size: 18px;
+  color: #3498db;
+  font-weight: 600;
+  margin-top: 5px;
+}
+
+/* Dashboard Title */
+.dashboard-title {
+  text-align: center;
+  font-size: 32px;
+  color: #2c3e50;
+  margin-bottom: 40px;
+}
+
+/* Graph Sections */
+.graph {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.graph h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-bottom: 10px;
+}
+
+.graph-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  width: 100%;
+  margin: 20px auto;
+}
+
+.graph-item {
+  flex: 1;
+  height: 275px;
+  display: flex;
+  justify-content: center;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.graph-item img {
+  max-height: 100%;
+  max-width: 100%;
+  height: auto;
+  width: auto;
+  object-fit: contain;
+}
+
+/* Page Break */
+.page-break {
+  break-before: page;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  color: #2c3e50;
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+/* Student Performance Table */
+.student-performance-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  margin: 20px auto;
+  text-align: center;
+}
+
+.student-performance-table th,
+.student-performance-table td {
+  border: 1px solid #222;
+  padding: 8px 4px;
+}
+
+.student-performance-table thead th {
+  background-color: #2c3e50;
+  color: #fff;
+  font-weight: bold;
+}
+
+.student-performance-table tbody tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.student-performance-table th,
+.student-performance-table td {
+  text-align: left;
+}
+
+/* Report Footer */
+.report-footer {
+  margin-top: 15px;
+  font-size: 13px;
+  color: #2c3e50;
+  line-height: 1.6;
+  background: #f4f6f7;
+  padding: 10px 15px;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.report-footer div {
+  margin-bottom: 5px;
+}
