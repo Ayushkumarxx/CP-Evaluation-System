@@ -3,28 +3,16 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-# Environments
-.env
-.venv
-venv/
-ENV/
-env/
+
 
 # Temporary files
 *.tmp
 *.temp
 
-# OS-generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-Thumbs.db
-ehthumbs.db
+
 
 # Project-specific ignores
-/data/temp_uploaded_file.xlsx
-/pdf_results/
-/results/
-/suggestion.txt
+/data/*
+/pdf_results/*
+/results/*
+
