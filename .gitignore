@@ -12,7 +12,10 @@ __pycache__/
 
 
 # Project-specific ignores
+data/**
 !data/.gitkeep
+pdf_results/**
 !pdf_results/.gitkeep
+results/**
 !results/.gitkeep
 
