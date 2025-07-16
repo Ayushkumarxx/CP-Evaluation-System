@@ -1,10 +1,10 @@
-import os
-import shutil
+import base64
+from io import BytesIO
 from math import pi
 import pandas as pd
 import numpy as np
+import matplotlib
 import matplotlib.pyplot as plt
-import seaborn as sns
 import warnings
 from pathlib import Path
 import plotly.graph_objects as go
@@ -12,6 +12,8 @@ from functools import lru_cache
 import gc
 
 warnings.filterwarnings('ignore')
+# Set matplotlib to use a faster backend
+matplotlib.use('Agg')  # Non-interactive backend
 
 # Matplotlib settings - Pre-configured for better performance
 plt.rcParams.update({
@@ -31,7 +33,7 @@ plt.rcParams.update({
     'axes.spines.right': False,
     'figure.dpi': 100,
 })
-sns.set_palette("husl")
+
 
 class DataVisualizerHelper:
     """
@@ -49,13 +51,8 @@ class DataVisualizerHelper:
     
     def __init__(self, processor):
         self.processor = processor
-        self.result_dir = Path(__file__).parent / "results" / "class_plots"
-        
-        # Optimized directory setup - single existence check
-        if self.result_dir.exists():
-            shutil.rmtree(self.result_dir)
-        self.result_dir.mkdir(parents=True, exist_ok=True)
-        
+       
+
         # Pre-cache colors for faster access
         self._colors_cache = {
             'blue': '#3B82F6', 'orange': '#F97316', 'green': '#10B981',
@@ -72,22 +69,23 @@ class DataVisualizerHelper:
     def get_color(self, color_name):
         """Cached color lookup for better performance."""
         return self._colors_cache.get(color_name, '#333333')
+    
+    def fig_to_base64(self, fig, backend='matplotlib'):
+        """Convert a Matplotlib or Plotly figure to base64 string."""
+        buf = BytesIO()
+        
+        if backend == 'matplotlib':
+            fig.savefig(buf, format='png', dpi=100, bbox_inches='tight', facecolor='white')
+            plt.close(fig)
+        elif backend == 'plotly':
+            fig.write_image(buf, format='png', width=600, height=600, scale=2)
+            del fig
 
-    def save_fig(self, fig, filename):
-        """Optimized figure saving with memory cleanup."""
-        path = self.result_dir / filename
-        fig.savefig(path, dpi=300, bbox_inches='tight', facecolor='white')
-        plt.close(fig)
-        # Force garbage collection for memory optimization
         gc.collect()
+        buf.seek(0)
+        return base64.b64encode(buf.read()).decode('utf-8')
 
-    def save_plotly_fig(self, fig, filename):
-        """Optimized Plotly figure saving."""
-        path = self.result_dir / filename
-        fig.write_image(str(path), width=600, height=600, scale=2)
-        # Clear figure from memory
-        del fig
-        gc.collect()
+
 
     def _standard_response(self, success, message="", error=None, fig=None):
         """Optimized response structure - removed data field for performance."""
@@ -103,9 +101,8 @@ class StudentVisualizer(DataVisualizerHelper):
     """
     Student-specific visualization class with performance optimizations.
 
-
     """
-    
+
     __slots__ = ('_data_cache',)
     
     def __init__(self, processor):
@@ -169,11 +166,8 @@ class StudentVisualizer(DataVisualizerHelper):
                 fontsize=12, fontweight='bold', color='black')
         ax.set_title("Accuracy Donut Chart", fontsize=16, fontweight='bold')
 
-        filename = f"roll_no_{roll_no}_test_{test_index + 1}_enhanced_donut.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
-
-        return self._standard_response(True, message="Donut chart created", fig=image_path)
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Donut chart created", fig=image_base64)
 
     def plot_accuracy_attempt_matrix(self, roll_no, test_index=0, subjects_total=None, total_questions=None):
         """Optimized accuracy vs attempt matrix visualization."""
@@ -264,11 +258,9 @@ class StudentVisualizer(DataVisualizerHelper):
         ax.set_facecolor('#f8f9fa')
         plt.tight_layout()
 
-        filename = f"roll_no_{roll_no}_test_{test_index + 1}_accuracy_matrix.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
-
-        return self._standard_response(True, message="Accuracy matrix plotted", fig=image_path)
+ 
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Accuracy matrix plotted", fig=image_base64)
 
     def get_subject_accuracy_radar(self, roll_no, test_index=0, subjects_total=None, total_questions=None):
         """Optimized radar chart generation."""
@@ -323,11 +315,9 @@ class StudentVisualizer(DataVisualizerHelper):
         ax.set_title("Accuracy & Attempts radar", fontsize=16, fontweight='bold', y=1.1)
         ax.legend(loc='upper right', bbox_to_anchor=(1.2, 1.1))
 
-        filename = f"roll_no_{roll_no}_test_{test_index + 1}_radar_accuracy_attempts.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
 
-        return self._standard_response(True, message="Radar chart generated", fig=image_path)
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Radar chart generated", fig=image_base64)
 
     def plot_gauge_chart(self, roll_no, test_index=0):
         """Optimized gauge chart with Plotly."""
@@ -377,11 +367,9 @@ class StudentVisualizer(DataVisualizerHelper):
             width=320
         )
 
-        filename = f"roll_no_{roll_no}_test_{test_index + 1}_gauge_chart.png"
-        self.save_plotly_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
-
-        return self._standard_response(True, message="Gauge chart created", fig=image_path)
+    
+        image_base64 = self.fig_to_base64(fig, backend='plotly')  
+        return self._standard_response(True, message="Gauge chart created", fig=image_base64)
 
     def plot_student_comparison(self, roll_no, 
                               subjects=["PHY", "CHEM", "BOT", "ZOO"], 
@@ -428,11 +416,9 @@ class StudentVisualizer(DataVisualizerHelper):
                    ha='center', fontsize=10, fontweight='bold')
 
         plt.tight_layout()
-        filename = f"roll_no_{roll_no}_comparison_bar.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
-
-        return self._standard_response(True, message="Comparison bar chart generated", fig=image_path)
+   
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Comparison bar chart generated", fig=image_base64)
     
     def plot_student_progress_line(self, roll_no, test_index=0):
         """Optimized progress line chart."""
@@ -473,20 +459,20 @@ class StudentVisualizer(DataVisualizerHelper):
             if entry['status'] == 'absent':
                 ax.annotate('Absent', (test_indices[i], 5), textcoords="offset points",
                            xytext=(0, 10), ha='center', fontsize=9, color='red')
-
+        
+        
         ax.set_title("Student Progress", fontsize=16, fontweight='bold')
         ax.set_xlabel("Test Index", fontsize=14, fontweight='bold')
         ax.set_ylabel("Marks", fontsize=14, fontweight='bold')
         ax.set_ylim(0, progress_data[0]['total_marks'])
         ax.set_xticks(test_indices)
+        ax.set_xticklabels([i + 1 for i in test_indices]) 
         ax.legend(loc='best')
 
         plt.tight_layout()
-        filename = f"roll_no_{roll_no}_progress_line.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
-
-        return self._standard_response(True, message="Progress line chart generated", fig=image_path)
+   
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Progress line chart generated", fig=image_base64)
 
     def clear_cache(self):
         """Clear internal cache to free memory."""
@@ -550,11 +536,11 @@ class ClassVisualizer(DataVisualizerHelper):
                     va='center', ha='left', fontsize=10, fontweight='bold')
 
         plt.tight_layout()
-        filename = f"test_{test_index + 1}_score_distribution.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
 
-        return self._standard_response(True, message="Score distribution chart created.", fig=str(image_path))
+    
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Score distribution chart created.", fig=image_base64)
+
 
     def plot_subject_accuracy_radar(self, test_index=0, subjects_total=None):
         """Generates a radar chart for class-wide subject accuracy and attempt rates."""
@@ -606,11 +592,9 @@ class ClassVisualizer(DataVisualizerHelper):
         ax.set_title("Class Accuracy & Attempt Rate", fontsize=16, fontweight='bold', y=1.1)
         ax.legend(loc='upper right', bbox_to_anchor=(1.2, 1.1))
 
-        filename = f"class_test_{test_index + 1}_subject_accuracy_radar.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
-
-        return self._standard_response(True, message="Class radar chart created.", fig=str(image_path))
+        
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Class radar chart created.", fig=image_base64)
 
     def plot_pass_fail_donut(self, test_index=0):
         """Generates a donut chart for the pass/fail summary."""
@@ -640,11 +624,8 @@ class ClassVisualizer(DataVisualizerHelper):
         ax.set_title(f'Pass/Fail Summary (Pass Mark: 40%)', fontsize=18, fontweight='bold')
         
         plt.tight_layout()
-        filename = f"test_{test_index + 1}_pass_fail_donut.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
-
-        return self._standard_response(True, message="Pass/fail donut chart created.", fig=str(image_path))
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Pass/fail donut chart created.", fig=image_base64)
 
 class SubjectVisualizer(DataVisualizerHelper):
     def __init__(self, processor):
@@ -672,11 +653,10 @@ class SubjectVisualizer(DataVisualizerHelper):
         ax.legend(loc='best')
 
         plt.tight_layout()
-        filename = f"roll_no_{roll_no}_total_marks_line.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
 
-        return self._standard_response(True, message="Total marks line chart generated", fig=image_path)
+        
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Total marks line chart generated", fig=image_base64)
     
     def plot_accuracy(self, roll_no, test_index=None):
         response = self.processor.get_student_progress_tracking(roll_no, test_index=test_index)
@@ -699,10 +679,9 @@ class SubjectVisualizer(DataVisualizerHelper):
         ax.legend(loc='best')
 
         plt.tight_layout()
-        filename = f"roll_no_{roll_no}_accuracy_line.png"
-        self.save_fig(fig, filename)
-        image_path = f"results/class_plots/{filename}"
 
-        return self._standard_response(True, message="Accuracy line chart generated", fig=image_path)
+        
+        image_base64 = self.fig_to_base64(fig, backend='matplotlib')  
+        return self._standard_response(True, message="Accuracy line chart generated", fig=image_base64)
 
      

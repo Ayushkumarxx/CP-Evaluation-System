@@ -83,18 +83,19 @@ def get_student_data(test_df):
     
     return students
 
-def create_output_directory(report_type, batch_name):
-    """Create output directory for reports"""
-    base_result_dir = Path("pdf_results")
-    report_folder = "Student Reports" if report_type == "Unit Test Report" else "Chapter Wise Reports"
+def create_output_directory(report_type, batch_name, exam_type):
+    """Create output directory structured as pdf_results/<exam_type>/<report_type>/<batch_name>"""
+    base_result_dir = Path("pdf_results") / exam_type.upper()
+    report_folder = "Student Reports" if report_type == "Unit Test Report" else "Chapter-wise Reports"
     result_dir = base_result_dir / report_folder / batch_name
     result_dir.mkdir(parents=True, exist_ok=True)
     return result_dir
 
-def generate_unit_test_reports(data_lists, students, batch_name, exam_config, all_tests=False):
+
+def generate_unit_test_reports(data_lists, students, batch_name, exam_config, exam_type, all_tests=False ):
     """Generate unit test reports"""
     processor = DataProcessor(data_lists)
-    result_dir = create_output_directory("Unit Test Report", batch_name)
+    result_dir = create_output_directory("Unit Test Report", batch_name, exam_type)
     
     # Generate class report
     class_vis = ClassVisualizer(processor=processor)
@@ -130,7 +131,7 @@ def generate_unit_test_reports(data_lists, students, batch_name, exam_config, al
                     subjects=exam_config["subject_codes"]
                 )
                 
-                output_path = result_dir / f"{student['mob_no']}_student_report.pdf"
+                output_path = result_dir / f"{student["roll_no"]}_{student["mob_no"]}_UT.pdf"
                 student_report.create_student_report(output_path, {})
         else:
             # Generate report for last test only
@@ -145,7 +146,7 @@ def generate_unit_test_reports(data_lists, students, batch_name, exam_config, al
                 subjects=exam_config["subject_codes"]
             )
             
-            output_path = result_dir / f"{student['mob_no']}_student_report.pdf"
+            output_path = result_dir / f"{student["roll_no"]}_{student["mob_no"]}_UT.pdf"
             student_report.create_student_report(output_path, {})
         
         # Update progress
@@ -158,10 +159,10 @@ def generate_unit_test_reports(data_lists, students, batch_name, exam_config, al
         )
         progress_bar.progress(i / total_students)
 
-def generate_chapter_wise_reports(data_lists, students, batch_name, exam_config, selected_subject):
+def generate_chapter_wise_reports(data_lists, students, batch_name, exam_config, exam_type, selected_subject):
     """Generate chapter-wise reports"""
     processor = SubjectWiseDataProcessor(data_lists)
-    result_dir = create_output_directory("Chapter-wise Report", batch_name)
+    result_dir = create_output_directory("Chapter-wise Report", batch_name, exam_type)
     
     total_students = len(students)
     progress_bar = st.progress(0)
@@ -178,7 +179,7 @@ def generate_chapter_wise_reports(data_lists, students, batch_name, exam_config,
             total_subjects_questions=exam_config["total_questions_per_subject"]
         )
         
-        output_path = result_dir / f"{student['mob_no']}_{selected_subject.lower()}_subjectwise.pdf"
+        output_path = result_dir / f"{student["roll_no"]}_{student["mob_no"]}_CT.pdf"
         subject_report.create_subject_wise_report(
             output_path,
             {"title": "Chapter-wise Report", "subject": selected_subject.upper()}
@@ -289,9 +290,9 @@ if st.button("🚀 Generate Report", type="primary"):
                 
                 # Generate reports based on type
                 if report_type == "Unit Test Report":
-                    generate_unit_test_reports(data_lists, students, batch_name, exam_config, all_tests)
+                    generate_unit_test_reports(data_lists, students, batch_name, exam_config, exam_type, all_tests)
                 else:
-                    generate_chapter_wise_reports(data_lists, students, batch_name, exam_config, selected_subject)
+                    generate_chapter_wise_reports(data_lists, students, batch_name, exam_config, exam_type, selected_subject)
                 
                 st.success("🎉 All reports generated successfully!")
                 

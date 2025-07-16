@@ -258,10 +258,8 @@ hr {
 }
 
 .graph .graph-item img {
-  max-height: 100%;
-  max-width: 100%;
-  height: auto;
-  width: auto;
+  height: 100%;
+  width: 100%;
   object-fit: contain; /* optional but safe */
 }
 

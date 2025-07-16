@@ -107,7 +107,9 @@
 
     <div class="insight-section">
       <div class="insight-image">
-        <img src="../../{{ plots.gauge_chart }}" alt="Insight Image" />
+
+        <img src="data:image/png;base64,{{ plots.student_progress_line }}" alt="Progress Graph" />
+      
       </div>
       <div class="insight-points">
         <h3>Key Insights</h3>
@@ -126,38 +128,34 @@
       <h2>Performance Overview</h2>
       <div class="graph-container">
         <div class="graph-item">
-          <img src="../../{{ plots.combined_accuracy_charts }}" alt="Graph 1" />
+          <img src="data:image/png;base64,{{ plots.combined_accuracy_charts }}" alt="Graph 1" />
         </div>
 
         <div class="graph-item">
-          <img src="../../{{ plots.student_comparison }}" alt="Graph 2" />
+          <img src="data:image/png;base64,{{ plots.student_comparison }}" alt="Graph 2" />
         </div>
 
-        <!-- <div class="graph-item">
-          <img src="{{ plots.subject_accuracy_radar }}" alt="Graph 1" />
-        </div> -->
+   
       </div>
     </section>
     <section class="graph">
       <h2>Deep Performance Insights</h2>
       <div class="graph-container">
-        <!-- <div class="graph-item">
-          <img src="{{ plots.student_comparison }}" alt="Graph 2" />
-        </div> -->
+
         <div class="graph-item">
-          <img src="../../{{ plots.subject_accuracy_radar }}" alt="Graph 1" />
+          <img src="data:image/png;base64,{{ plots.subject_accuracy_radar }}" alt="Graph 1" />
         </div>
 
         <div class="graph-item">
-          <img src="../../{{ plots.accuracy_attempt_matrix }}" alt="Graph 2" />
+          <img src="data:image/png;base64,{{ plots.accuracy_attempt_matrix }}" alt="Graph 2" />
         </div>
       </div>
     </section>
     <section class="graph">
-      <h2>Progress Tracking and Summary</h2>
+      <h2>Ranking and Summary</h2>
       <div class="graph-container">
         <div class="graph-item">
-          <img src="../../{{ plots.student_progress_line }}" alt="Progress Graph" />
+            <img src="data:image/png;base64,{{ plots.gauge_chart }}" alt="Insight Image" />
         </div>
 
         <div class="graph-summary">
